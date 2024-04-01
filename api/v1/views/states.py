@@ -13,7 +13,7 @@ def return_states():
     from models import storage
     from models.state import State
     return_list = []
-    state_dict = storage.all("State")
+    state_dict = storage.all(State)
     for item in state_dict.values():
         return_list.append(item.to_dict())
     return jsonify(return_list)
