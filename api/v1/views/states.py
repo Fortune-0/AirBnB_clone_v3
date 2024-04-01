@@ -2,8 +2,9 @@
 """Handle requests to the api for State"""
 
 from api.v1.views import app_views
-from flask import jsonify, abort
+from flask import jsonify, abort, request
 from os import environ
+
 
 @app_views.route("/states/",
                  strict_slashes=False)
@@ -44,3 +45,42 @@ def delete_a_state(state_id):
             return (jsonify({}), 200)
     else:
         abort(404)
+
+
+@app_views.route('/states/', methods=['POST'])
+def create_state():
+    """Create a new state"""
+    from models import storage
+    from models.state import State
+    from werkzeug.exceptions import HTTPException
+    try:
+        _instance = request.get_json(force=True)
+    except Exception:
+        return ("Not a JSON", 400)
+    if 'name' not in _instance.keys():
+        return ("Missing name", 400)
+    new_state = State(**_instance)
+    new_state.save()
+    return (jsonify(new_state.to_dict()), 201)
+
+
+@app_views.route('/states/<state_id>', methods=['PUT'])
+def update_state(state_id):
+    """Update a state's value in the database"""
+    from models import storage
+    from models.state import State
+    states_dict = storage.all(State)
+    for item in states_dict.values():
+        obj_to_u = item
+        break
+    else:
+        abort(404)
+    try:
+        instance_upd = request.get_json(force=True)
+    except Exception:
+        return ("Not a JSON", 400)
+    ignored_keys = ["id", "created_at", "updated_at"]
+    for keyy in instance_upd.keys():
+        if keyy not in ignored_keys:
+            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    return (obj_to_u.to_dict(), 200)
