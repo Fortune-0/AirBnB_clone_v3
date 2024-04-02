@@ -56,9 +56,9 @@ def create_state():
     try:
         _instance = request.get_json(force=True)
     except Exception:
-        return ("Not a JSON", 400)
+        abort(400, "Not a JSON")
     if 'name' not in _instance.keys():
-        return ("Missing name", 400)
+        abort(400, "Missing name")
     new_state = State(**_instance)
     new_state.save()
     return (jsonify(new_state.to_dict()), 201)
@@ -78,7 +78,7 @@ def update_state(state_id):
     try:
         instance_upd = request.get_json(force=True)
     except Exception:
-        return ("Not a JSON", 400)
+        abort(400, "Not a JSON")
     ignored_keys = ["id", "created_at", "updated_at"]
     for keyy in instance_upd.keys():
         if keyy not in ignored_keys:
