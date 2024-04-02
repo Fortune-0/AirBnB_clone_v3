@@ -71,8 +71,9 @@ def update_state(state_id):
     from models.state import State
     states_dict = storage.all(State)
     for item in states_dict.values():
-        obj_to_u = item
-        break
+        if item.id == state_id:
+            obj_to_u = item
+            break
     else:
         abort(404)
     try:

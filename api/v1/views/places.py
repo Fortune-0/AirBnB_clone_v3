@@ -95,8 +95,9 @@ def update_place(place_id):
     from models.place import Place
     places_dict = storage.all(Place)
     for item in places_dict.values():
-        obj_to_u = item
-        break
+        if item.id == state_id:
+            obj_to_u = item
+            break
     else:
         abort(404)
     try:

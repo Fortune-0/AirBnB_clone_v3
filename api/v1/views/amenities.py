@@ -71,8 +71,9 @@ def update_amenity(amenity_id):
     from models.amenity import Amenity
     amenities_dict = storage.all(Amenity)
     for item in amenities_dict.values():
-        obj_to_u = item
-        break
+        if item.id == amenity_id:
+            obj_to_u = item
+            break
     else:
         abort(404)
     try:
