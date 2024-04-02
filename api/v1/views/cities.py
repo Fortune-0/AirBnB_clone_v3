@@ -55,7 +55,7 @@ def delete_a_city(city_id):
         abort(404)
 
 
-@app_views.route('/states/<state_id>/cities/', methods=['POST'])
+@app_views.route('/states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):
     """Create a new city"""
     from models import storage

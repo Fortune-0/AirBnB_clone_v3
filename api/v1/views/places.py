@@ -55,7 +55,7 @@ def delete_a_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>/places/', methods=['POST'])
+@app_views.route('/cities/<city_id>/places', methods=['POST'])
 def create_place(city_id):
     """Create a new place"""
     from models import storage

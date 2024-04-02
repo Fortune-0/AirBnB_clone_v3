@@ -47,7 +47,7 @@ def delete_a_user(user_id):
         abort(404)
 
 
-@app_views.route('/users/', methods=['POST'])
+@app_views.route('/users', methods=['POST'])
 def create_user():
     """Create a new user"""
     from models import storage

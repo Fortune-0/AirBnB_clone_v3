@@ -55,7 +55,7 @@ def delete_a_review(review_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>/reviews/', methods=['POST'])
+@app_views.route('/places/<place_id>/reviews', methods=['POST'])
 def create_review(place_id):
     """Create a new review"""
     from models import storage

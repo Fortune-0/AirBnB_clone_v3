@@ -47,7 +47,7 @@ def delete_a_state(state_id):
         abort(404)
 
 
-@app_views.route('/states/', methods=['POST'])
+@app_views.route('/states', methods=['POST'])
 def create_state():
     """Create a new state"""
     from models import storage

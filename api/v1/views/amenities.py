@@ -47,7 +47,7 @@ def delete_a_amenity(amenity_id):
         abort(404)
 
 
-@app_views.route('/amenities/', methods=['POST'])
+@app_views.route('/amenities', methods=['POST'])
 def create_amenity():
     """Create a new amenity"""
     from models import storage
