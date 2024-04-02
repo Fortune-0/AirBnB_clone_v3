@@ -98,7 +98,7 @@ def update_place(place_id):
         instance_upd = request.get_json(force=True)
     except Exception:
         return ("Not a JSON", 400)
-    ignored_keys = ["id", "created_at", "updated_at", "city_id"]
+    ignored_keys = ["id", "created_at", "updated_at", "user_id", "city_id"]
     for keyy in instance_upd.keys():
         if keyy not in ignored_keys:
             obj_to_u.__dict__[keyy] = instance_upd[keyy]
