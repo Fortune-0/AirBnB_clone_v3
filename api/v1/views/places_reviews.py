@@ -76,6 +76,11 @@ def create_review(place_id):
     if 'user_id' not in _instance.keys():
         abort(400, "Missing user_id")
     user_dict = storage.all(User)
+    for item in user_dict.values():
+        if user.id == _instance['user_id]:
+            break
+    else:
+        abort(404)
     if 'text' not in _instance.keys():
         abort(400, "Missing text")
     new_review = Review(**_instance)
