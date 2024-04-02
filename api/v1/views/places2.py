@@ -6,25 +6,17 @@ from flask import jsonify, abort, request
 from os import environ
 
 
-@app_views.route("/cities/<city_id>/places", methods=['GET'])
-def return_places(city_id):
-    """Return city in database corresponding to city_id"""
+@app_views.route("/places/",
+                 strict_slashes=False)
+def return_places():
+    """Return JSON object containing list of places in database"""
     from models import storage
-    from models.city import City
     from models.place import Place
-    cities_dict = storage.all(City)
-    places_dict = storage.all(Place)
-    for item in cities_dict.values():
-        if item.id == city_id:
-            parent_city = item.to_dict()
-            break
-    else:
-        abort(404)
-    places_list = []
-    for item in places_dict.values():
-        if item.city_id == city_id:
-            places_list.append(item.to_dict())
-    return (jsonify(places_list))
+    return_list = []
+    place_dict = storage.all(Place)
+    for item in place_dict.values():
+        return_list.append(item.to_dict())
+    return jsonify(return_list)
 
 
 @app_views.route("/places/<place_id>", methods=['GET'])
@@ -55,29 +47,27 @@ def delete_a_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>/places/', methods=['POST'])
-def create_place(city_id):
+@app_views.route('/places/', methods=['POST'])
+def create_place():
     """Create a new place"""
     from models import storage
     from models.place import Place
-    from models.city import City
-    cities_dict = storage.all(City)
-    for item in cities_dict.values():
-        if item.id == city_id:
-            break
-    else:
-        abort(404)
+    from models.user import User
     from werkzeug.exceptions import HTTPException
     try:
         _instance = request.get_json(force=True)
     except Exception:
-        return ("Not a JSON", 400)
-    _instance.update({'city_id': city_id})
+        abort(400, "Not a JSON")
     if 'user_id' not in _instance.keys():
         abort(400, "Missing user_id")
     user_dict = storage.all(User)
     if 'name' not in _instance.keys():
         abort(400, "Missing name")
+    for item in users_dict.values():
+        if item.user_id == user_id:
+            break
+    else:
+        abort(404)
     new_place = Place(**_instance)
     new_place.save()
     return (jsonify(new_place.to_dict()), 201)
@@ -97,8 +87,8 @@ def update_place(place_id):
     try:
         instance_upd = request.get_json(force=True)
     except Exception:
-        return ("Not a JSON", 400)
-    ignored_keys = ["id", "created_at", "updated_at", "city_id"]
+        abort(400, "Not a JSON")
+    ignored_keys = ["id", "created_at", "user_id", "updated_at"]
     for keyy in instance_upd.keys():
         if keyy not in ignored_keys:
             obj_to_u.__dict__[keyy] = instance_upd[keyy]
