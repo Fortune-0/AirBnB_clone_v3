@@ -23,8 +23,9 @@ def return_stats():
     from models.review import Review
     from models.user import User
     count_dict = {}
-    classes = {"Amenity": Amenity, "City": City,
-               "Place": Place, "Review": Review, "State": State, "User": User}
+    classes = {"amenities": Amenity, "cities": City,
+               "places": Place, "reviews": Review,
+               "states": State, "users": User}
     for k, v in classes.items():
         count_dict.update({k: storage.count(v)})
     return jsonify(count_dict)
