@@ -90,4 +90,4 @@ def update_state(state_id):
                     setattr(item, keyy, instance_upd[keyy])
             item.save()
             break
-    return (obj_to_u.to_dict(), 200)
+    return (item.to_dict(), 200)
