@@ -100,8 +100,7 @@ def update_review(review_id):
     from models.review import Review
     reviews_dict = storage.all(Review)
     for item in reviews_dict.values():
-        if item.id == state_id:
-            obj_to_u = item
+        if item.id == review_id:
             break
     else:
         abort(404)
@@ -110,7 +109,11 @@ def update_review(review_id):
     except Exception:
         return ("Not a JSON", 400)
     ignored_keys = ["id", "created_at", "updated_at", "user_id", "place_id"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    for item in reviews_dict.values():
+        if item.id == review_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
     return (obj_to_u.to_dict(), 200)

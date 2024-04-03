@@ -102,7 +102,6 @@ def update_place(place_id):
     places_dict = storage.all(Place)
     for item in places_dict.values():
         if item.id == place_id:
-            obj_to_u = item
             break
     else:
         abort(404)
@@ -111,8 +110,11 @@ def update_place(place_id):
     except Exception:
         return ("Not a JSON", 400)
     ignored_keys = ["id", "created_at", "updated_at", "user_id", "city_id"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
-    obj_to_u.save()
-    return (obj_to_u.to_dict(), 200)
+    for item in places_dict.values():
+        if item.id == place_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
+    return (item.to_dict(), 200)

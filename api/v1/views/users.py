@@ -77,7 +77,6 @@ def update_user(user_id):
     users_dict = storage.all(User)
     for item in users_dict.values():
         if item.id == user_id:
-            obj_to_u = item
             break
     else:
         abort(404)
@@ -86,7 +85,11 @@ def update_user(user_id):
     except Exception:
         abort(400, "Not a JSON")
     ignored_keys = ["id", "created_at", "email", "updated_at"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    for item in users_dict.values():
+        if item.id == user_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
     return (obj_to_u.to_dict(), 200)

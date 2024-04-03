@@ -89,7 +89,6 @@ def update_city(city_id):
     from models.city import City
     cities_dict = storage.all(City)
     for item in cities_dict.values():
-        obj_to_u = item
         break
     else:
         abort(404)
@@ -98,7 +97,11 @@ def update_city(city_id):
     except Exception:
         return ("Not a JSON", 400)
     ignored_keys = ["id", "created_at", "updated_at", "state_id"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    for item in cities_dict.values():
+        if item.id == city_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
     return (obj_to_u.to_dict(), 200)

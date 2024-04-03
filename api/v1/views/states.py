@@ -75,7 +75,6 @@ def update_state(state_id):
     states_dict = storage.all(State)
     for item in states_dict.values():
         if item.id == state_id:
-            obj_to_u = item
             break
     else:
         abort(404)
@@ -84,7 +83,11 @@ def update_state(state_id):
     except Exception:
         abort(400, "Not a JSON")
     ignored_keys = ["id", "created_at", "updated_at"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    for item in states_dict.values():
+        if item.id == state_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
     return (obj_to_u.to_dict(), 200)

@@ -76,7 +76,6 @@ def update_amenity(amenity_id):
     amenities_dict = storage.all(Amenity)
     for item in amenities_dict.values():
         if item.id == amenity_id:
-            obj_to_u = item
             break
     else:
         abort(404)
@@ -85,7 +84,11 @@ def update_amenity(amenity_id):
     except Exception:
         return ("Not a JSON", 400)
     ignored_keys = ["id", "created_at", "updated_at"]
-    for keyy in instance_upd.keys():
-        if keyy not in ignored_keys:
-            obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    for item in amenities_dict.values():
+        if item.id == amenity_id:
+            for keyy in instance_upd.keys():
+                if keyy not in ignored_keys:
+                    setattr(item, keyy, instance_upd[keyy])
+            item.save()
+            break
     return (obj_to_u.to_dict(), 200)
