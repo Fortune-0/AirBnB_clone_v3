@@ -114,4 +114,5 @@ def update_place(place_id):
     for keyy in instance_upd.keys():
         if keyy not in ignored_keys:
             obj_to_u.__dict__[keyy] = instance_upd[keyy]
+    obj_to_u.save()
     return (obj_to_u.to_dict(), 200)
