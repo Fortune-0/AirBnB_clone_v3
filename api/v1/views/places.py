@@ -6,7 +6,8 @@ from flask import jsonify, abort, request
 from os import environ
 
 
-@app_views.route("/cities/<city_id>/places", methods=['GET'])
+@app_views.route("/cities/<city_id>/places", strict_slashes=False,
+                 methods=['GET'])
 def return_places(city_id):
     """Return city in database corresponding to city_id"""
     from models import storage
@@ -27,7 +28,8 @@ def return_places(city_id):
     return (jsonify(places_list))
 
 
-@app_views.route("/places/<place_id>", methods=['GET'])
+@app_views.route("/places/<place_id>", strict_slashes=False,
+                 methods=['GET'])
 def return_a_place(place_id):
     """Return place in database corresponding to place_id"""
     from models import storage
@@ -40,7 +42,8 @@ def return_a_place(place_id):
         abort(404)
 
 
-@app_views.route("/places/<place_id>", methods=['DELETE'])
+@app_views.route("/places/<place_id>", strict_slashes=False,
+                 methods=['DELETE'])
 def delete_a_place(place_id):
     """Delete a place from the database"""
     from models import storage
@@ -55,7 +58,8 @@ def delete_a_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@app_views.route('/cities/<city_id>/places', strict_slashes=False,
+                 methods=['POST'])
 def create_place(city_id):
     """Create a new place"""
     from models import storage
@@ -88,7 +92,8 @@ def create_place(city_id):
     return (jsonify(new_place.to_dict()), 201)
 
 
-@app_views.route('/places/<place_id>', methods=['PUT'])
+@app_views.route('/places/<place_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_place(place_id):
     """Update a place's value in the database"""
     from models import storage

@@ -19,7 +19,8 @@ def return_states():
     return jsonify(return_list)
 
 
-@app_views.route("/states/<state_id>", methods=['GET'])
+@app_views.route("/states/<state_id>", strict_slashes=False,
+                 methods=['GET'])
 def return_a_state(state_id):
     """Return state in database corresponding to state_id"""
     from models import storage
@@ -32,7 +33,8 @@ def return_a_state(state_id):
         abort(404)
 
 
-@app_views.route("/states/<state_id>", methods=['DELETE'])
+@app_views.route("/states/<state_id>", strict_slashes=False,
+                 methods=['DELETE'])
 def delete_a_state(state_id):
     """Delete a state from the database"""
     from models import storage
@@ -47,7 +49,7 @@ def delete_a_state(state_id):
         abort(404)
 
 
-@app_views.route('/states', methods=['POST'])
+@app_views.route('/states', strict_slashes=False, methods=['POST'])
 def create_state():
     """Create a new state"""
     from models import storage
@@ -64,7 +66,8 @@ def create_state():
     return (jsonify(new_state.to_dict()), 201)
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_state(state_id):
     """Update a state's value in the database"""
     from models import storage

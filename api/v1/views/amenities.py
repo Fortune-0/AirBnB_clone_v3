@@ -6,7 +6,7 @@ from flask import jsonify, abort, request
 from os import environ
 
 
-@app_views.route("/amenities/",
+@app_views.route("/amenities/", methods=['GET'],
                  strict_slashes=False)
 def return_amenities():
     """Return JSON object containing list of amenities in database"""
@@ -19,7 +19,8 @@ def return_amenities():
     return jsonify(return_list)
 
 
-@app_views.route("/amenities/<amenity_id>", methods=['GET'])
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
+                 methods=['GET'])
 def return_a_amenity(amenity_id):
     """Return amenity in database corresponding to amenity_id"""
     from models import storage
@@ -32,7 +33,8 @@ def return_a_amenity(amenity_id):
         abort(404)
 
 
-@app_views.route("/amenities/<amenity_id>", methods=['DELETE'])
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
+                 methods=['DELETE'])
 def delete_a_amenity(amenity_id):
     """Delete a amenity from the database"""
     from models import storage
@@ -47,7 +49,8 @@ def delete_a_amenity(amenity_id):
         abort(404)
 
 
-@app_views.route('/amenities', methods=['POST'])
+@app_views.route('/amenities', strict_slashes=False,
+                 methods=['POST'])
 def create_amenity():
     """Create a new amenity"""
     from models import storage
@@ -64,7 +67,8 @@ def create_amenity():
     return (jsonify(new_amenity.to_dict()), 201)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['PUT'])
+@app_views.route('/amenities/<amenity_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_amenity(amenity_id):
     """Update a amenity's value in the database"""
     from models import storage

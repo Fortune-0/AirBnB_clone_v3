@@ -6,7 +6,8 @@ from flask import jsonify, abort, request
 from os import environ
 
 
-@app_views.route("/places/<place_id>/reviews", methods=['GET'])
+@app_views.route("/places/<place_id>/reviews", strict_slashes=False,
+                 methods=['GET'])
 def return_reviews(place_id):
     """Return place in database corresponding to place_id"""
     from models import storage
@@ -27,7 +28,8 @@ def return_reviews(place_id):
     return (jsonify(reviews_list))
 
 
-@app_views.route("/reviews/<review_id>", methods=['GET'])
+@app_views.route("/reviews/<review_id>", strict_slashes=False,
+                 methods=['GET'])
 def return_a_review(review_id):
     """Return review in database corresponding to review_id"""
     from models import storage
@@ -40,7 +42,8 @@ def return_a_review(review_id):
         abort(404)
 
 
-@app_views.route("/reviews/<review_id>", methods=['DELETE'])
+@app_views.route("/reviews/<review_id>", strict_slashes=False,
+                 methods=['DELETE'])
 def delete_a_review(review_id):
     """Delete a review from the database"""
     from models import storage
@@ -55,7 +58,8 @@ def delete_a_review(review_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'])
+@app_views.route('/places/<place_id>/reviews', strict_slashes=False,
+                 methods=['POST'])
 def create_review(place_id):
     """Create a new review"""
     from models import storage
@@ -88,7 +92,8 @@ def create_review(place_id):
     return (jsonify(new_review.to_dict()), 201)
 
 
-@app_views.route('/reviews/<review_id>', methods=['PUT'])
+@app_views.route('/reviews/<review_id>', strict_slashes=False,
+                 methods=['PUT'])
 def update_review(review_id):
     """Update a review's value in the database"""
     from models import storage
