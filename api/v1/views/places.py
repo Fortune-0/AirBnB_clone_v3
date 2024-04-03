@@ -79,6 +79,7 @@ def create_place(city_id):
     _instance.update({'city_id': city_id})
     if 'user_id' not in _instance.keys():
         abort(400, "Missing user_id")
+    from models.user import User
     user_dict = storage.all(User)
     for item in user_dict.values():
         if item.id == _instance['user_id']:
@@ -100,7 +101,7 @@ def update_place(place_id):
     from models.place import Place
     places_dict = storage.all(Place)
     for item in places_dict.values():
-        if item.id == state_id:
+        if item.id == place_id:
             obj_to_u = item
             break
     else:

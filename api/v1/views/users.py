@@ -76,7 +76,7 @@ def update_user(user_id):
     from models.user import User
     users_dict = storage.all(User)
     for item in users_dict.values():
-        if item.id == state_id:
+        if item.id == user_id:
             obj_to_u = item
             break
     else:
