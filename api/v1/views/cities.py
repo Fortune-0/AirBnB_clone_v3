@@ -89,7 +89,8 @@ def update_city(city_id):
     from models.city import City
     cities_dict = storage.all(City)
     for item in cities_dict.values():
-        break
+        if item.id == city_id:
+            break
     else:
         abort(404)
     try:

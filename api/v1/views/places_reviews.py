@@ -79,6 +79,7 @@ def create_review(place_id):
     _instance.update({'place_id': place_id})
     if 'user_id' not in _instance.keys():
         abort(400, "Missing user_id")
+    from models.user import User
     user_dict = storage.all(User)
     for item in user_dict.values():
         if item.id == _instance['user_id']:
